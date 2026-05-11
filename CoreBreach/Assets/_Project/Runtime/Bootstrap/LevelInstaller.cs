@@ -1,6 +1,8 @@
 using UnityEngine;
 using CoreBreach.Domain.Player;
 using CoreBreach.Domain.Projectiles;
+using CoreBreach.Domain.CoreDomain;
+using CoreBreach.Domain.GameState;
 using CoreBreach.Infrastructure.Pooling;
 
 namespace CoreBreach.Bootstrap
@@ -14,6 +16,10 @@ namespace CoreBreach.Bootstrap
     {
         [Header("Player")]
         [SerializeField] private WeaponHolder playerWeaponHolder;
+
+        [Header("Core & State")]
+        [SerializeField] private Core core;
+        [SerializeField] private GameStateMachine gameStateMachine;
 
         [Header("Projectiles")]
         [SerializeField] private Projectile projectilePrefab;
