@@ -3,6 +3,7 @@ using CoreBreach.Domain.Player;
 using CoreBreach.Domain.Projectiles;
 using CoreBreach.Domain.CoreDomain;
 using CoreBreach.Domain.GameState;
+using CoreBreach.Domain.Waves;
 using CoreBreach.Infrastructure.Pooling;
 
 namespace CoreBreach.Bootstrap
@@ -20,6 +21,9 @@ namespace CoreBreach.Bootstrap
         [Header("Core & State")]
         [SerializeField] private Core core;
         [SerializeField] private GameStateMachine gameStateMachine;
+
+        [Header("Waves")]
+        [SerializeField] private WaveSpawner waveSpawner;
 
         [Header("Projectiles")]
         [SerializeField] private Projectile projectilePrefab;
@@ -44,13 +48,13 @@ namespace CoreBreach.Bootstrap
                 maxSize: projectilePoolMax);
 
             if (playerWeaponHolder != null)
-            {
                 playerWeaponHolder.Configure(projectilePool);
-            }
             else
-            {
                 Debug.LogError("[LevelInstaller] playerWeaponHolder atanmamış.");
-            }
+
+            // WaveSpawner → GameStateMachine bağlantısı
+            if (waveSpawner != null && gameStateMachine != null)
+                waveSpawner.WaveCompleted += gameStateMachine.OnWaveCompleted;
         }
     }
 }
