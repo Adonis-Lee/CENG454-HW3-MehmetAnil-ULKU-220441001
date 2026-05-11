@@ -29,6 +29,7 @@ namespace CoreBreach.Domain.Waves
         private int aliveCount;
 
         public System.Action<int> WaveCompleted;
+        public System.Action<Enemy> EnemySpawned;
         private int currentWave = 0;
 
         private void Start()
@@ -67,7 +68,7 @@ namespace CoreBreach.Domain.Waves
 
             enemy.Configure(config, enemyPool, coreTransform, playerTransform);
 
-            // Enemy ölünce aliveCount azalt, dalga bitti mi kontrol et
+            EnemySpawned?.Invoke(enemy);
             enemy.Died += OnEnemyDied;
         }
 

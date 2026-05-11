@@ -20,8 +20,9 @@ namespace CoreBreach.Domain.Projectiles
         private GameObject owner;
         private IPool<Projectile> ownerPool;
         private bool released;
+        private int pierceRemaining;
 
-        public void Launch(Vector2 dir, int dmg, GameObject ownerObject, IPool<Projectile> pool)
+        public void Launch(Vector2 dir, int dmg, GameObject ownerObject, IPool<Projectile> pool, int pierce = 0)
         {
             direction = dir.normalized;
             damage = dmg;
@@ -29,7 +30,8 @@ namespace CoreBreach.Domain.Projectiles
             ownerPool = pool;
             age = 0f;
             released = false;
-            transform.up = direction; // mermiyi yöne çevir (cosmetic)
+            pierceRemaining = pierce;
+            transform.up = direction;
         }
 
         public void OnSpawn()
@@ -65,7 +67,10 @@ namespace CoreBreach.Domain.Projectiles
             if (other.TryGetComponent<IDamageable>(out var target) && target.IsAlive)
             {
                 target.TakeDamage(new DamageInfo(damage, transform.position, gameObject));
-                ReturnToPool();
+                if (pierceRemaining > 0)
+                    pierceRemaining--;
+                else
+                    ReturnToPool();
             }
         }
 
