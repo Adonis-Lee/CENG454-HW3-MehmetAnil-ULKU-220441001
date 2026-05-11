@@ -1,0 +1,19 @@
+using UnityEngine;
+
+namespace CoreBreach.Domain.Enemies
+{
+    /// <summary>
+    /// IMovementStrategy: oyuncuya doğru sürekli koval.
+    /// Hunter tipi düşman kullanır. Hedef olarak PlayerTarget ile çalışır.
+    /// </summary>
+    [CreateAssetMenu(menuName = "CoreBreach/Strategies/ChasePlayerMove")]
+    public class ChasePlayerMove : MovementStrategySO
+    {
+        public override void Step(Enemy enemy, Vector2 target, float deltaTime)
+        {
+            Vector2 pos = enemy.transform.position;
+            Vector2 dir = (target - pos).normalized;
+            enemy.transform.position = pos + dir * enemy.Speed * deltaTime;
+        }
+    }
+}
