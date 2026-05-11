@@ -15,7 +15,7 @@ namespace CoreBreach.Domain.Weapons
             if (context.ProjectilePool == null) return;
             Projectile projectile = context.ProjectilePool.Get();
             projectile.transform.position = context.Origin;
-            projectile.Launch(context.Direction, context.BaseDamage, context.Owner, context.ProjectilePool);
+            projectile.Launch(context.Direction, context.BaseDamage, context.Owner, context.ProjectilePool, context.PierceCount);
         }
     }
 }
