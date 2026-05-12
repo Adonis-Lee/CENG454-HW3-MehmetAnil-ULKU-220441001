@@ -1,5 +1,6 @@
 using UnityEngine;
 using CoreBreach.Domain.Combat;
+using CoreBreach.Domain.CoreDomain;
 using CoreBreach.Infrastructure.Pooling;
 
 namespace CoreBreach.Domain.Projectiles
@@ -62,7 +63,8 @@ namespace CoreBreach.Domain.Projectiles
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (released) return;
-            if (other.gameObject == owner) return; // kendi sahibine vurma
+            if (other.gameObject == owner) return;             // kendi sahibine vurma
+            if (other.TryGetComponent<Core>(out _)) return;   // Core'a vurma — sadece enemy
 
             if (other.TryGetComponent<IDamageable>(out var target) && target.IsAlive)
             {

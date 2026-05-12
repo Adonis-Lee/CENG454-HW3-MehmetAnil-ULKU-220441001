@@ -12,6 +12,10 @@ namespace CoreBreach.Bootstrap
     /// Composition root — sahnedeki tüm bileşenleri birbirine bağlar.
     /// "Tek dev GameManager" anti-pattern'i yerine bu sınıf sadece wiring yapar;
     /// runtime davranış kendi sahibinde kalır.
+    ///
+    /// Observer chain:
+    ///   WaveSpawner.WaveStarted/EnemySpawned → WaveTracker
+    ///   WaveTracker.WaveCompleted            → GameStateMachine.OnWaveCompleted
     /// </summary>
     public class LevelInstaller : MonoBehaviour
     {
@@ -24,6 +28,7 @@ namespace CoreBreach.Bootstrap
 
         [Header("Waves")]
         [SerializeField] private WaveSpawner waveSpawner;
+        [SerializeField] private WaveTracker waveTracker;
 
         [Header("Projectiles")]
         [SerializeField] private Projectile projectilePrefab;
@@ -52,9 +57,12 @@ namespace CoreBreach.Bootstrap
             else
                 Debug.LogError("[LevelInstaller] playerWeaponHolder atanmamış.");
 
-            // WaveSpawner → GameStateMachine bağlantısı
-            if (waveSpawner != null && gameStateMachine != null)
-                waveSpawner.WaveCompleted += gameStateMachine.OnWaveCompleted;
+            // WaveTracker → GameStateMachine (Observer)
+            // WaveSpawner → WaveTracker bağlantısı WaveTracker.waveSpawner field'ından geliyor.
+            if (waveTracker != null && gameStateMachine != null)
+                waveTracker.WaveCompleted += gameStateMachine.OnWaveCompleted;
+            else
+                Debug.LogWarning("[LevelInstaller] waveTracker veya gameStateMachine atanmamış.");
         }
     }
 }
