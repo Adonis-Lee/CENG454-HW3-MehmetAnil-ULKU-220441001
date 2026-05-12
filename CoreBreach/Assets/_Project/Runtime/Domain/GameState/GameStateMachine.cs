@@ -1,29 +1,21 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using CoreBreach.Domain.CoreDomain;
+using CoreBreach.Domain.Combat;
 
 namespace CoreBreach.Domain.GameState
 {
     /// <summary>
     /// Observer subscriber: Core.CoreDestroyed → Lose, WaveTracker.WaveCompleted(5) → Win.
-    /// GameOver / GameWon event'leri → UI panelleri (Observer chain).
+    /// Oyun durumunu yönetir; UI'a event yayar.
     /// </summary>
     public class GameStateMachine : MonoBehaviour
     {
         [SerializeField] private Core core;
         [SerializeField] private int totalWaves = 5;
 
-        [Header("UI Panels")]
-        [SerializeField] private GameObject winPanel;
-        [SerializeField] private GameObject losePanel;
-
         public enum State { Playing, Won, Lost }
         public State CurrentState { get; private set; } = State.Playing;
-
-        // Observer events → WaveView veya diğer UI bileşenleri
-        public event Action GameWon;
-        public event Action GameLost;
 
         private void OnEnable()
         {
@@ -37,12 +29,6 @@ namespace CoreBreach.Domain.GameState
                 core.CoreDestroyed -= OnCoreDestroyed;
         }
 
-        private void Start()
-        {
-            if (winPanel  != null) winPanel.SetActive(false);
-            if (losePanel != null) losePanel.SetActive(false);
-        }
-
         public void OnWaveCompleted(int waveIndex)
         {
             if (waveIndex >= totalWaves)
@@ -54,8 +40,7 @@ namespace CoreBreach.Domain.GameState
             if (CurrentState != State.Playing) return;
             CurrentState = State.Lost;
             Debug.Log("[GameStateMachine] LOSE — Core destroyed.");
-            if (losePanel != null) losePanel.SetActive(true);
-            GameLost?.Invoke();
+            // TODO: lose screen UI — feat/waves-and-state'de
         }
 
         private void TriggerWin()
@@ -63,15 +48,7 @@ namespace CoreBreach.Domain.GameState
             if (CurrentState != State.Playing) return;
             CurrentState = State.Won;
             Debug.Log("[GameStateMachine] WIN — All waves cleared.");
-            if (winPanel != null) winPanel.SetActive(true);
-            GameWon?.Invoke();
-        }
-
-        // Inspector'daki butonlara atanabilir
-        public void RestartGame()
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(
-                UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            // TODO: win screen UI — feat/waves-and-state'de
         }
     }
 }

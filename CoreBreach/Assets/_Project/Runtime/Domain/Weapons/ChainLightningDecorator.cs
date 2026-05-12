@@ -1,6 +1,5 @@
 using UnityEngine;
 using CoreBreach.Domain.Combat;
-using CoreBreach.Domain.CoreDomain;
 
 namespace CoreBreach.Domain.Weapons
 {
@@ -44,7 +43,6 @@ namespace CoreBreach.Domain.Weapons
             {
                 if (count >= chainCount) break;
                 if (hit.gameObject == context.Owner) continue;
-                if (hit.TryGetComponent<Core>(out _)) continue;  // Core'a zincir vurma
                 if (hit.TryGetComponent<IDamageable>(out var target) && target.IsAlive)
                 {
                     target.TakeDamage(new DamageInfo(chainDamage, hit.transform.position, context.Owner));

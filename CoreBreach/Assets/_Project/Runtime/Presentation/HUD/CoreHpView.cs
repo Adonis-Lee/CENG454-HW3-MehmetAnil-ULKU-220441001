@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using CoreBreach.Domain.CoreDomain;
 using CoreBreach.Domain.Combat;
 
@@ -15,7 +14,7 @@ namespace CoreBreach.Presentation.HUD
     {
         [SerializeField] private Core core;
         [SerializeField] private Slider hpSlider;
-        [SerializeField] private TextMeshProUGUI hpText;
+        [SerializeField] private Text hpText;
 
         private void OnEnable()
         {
