@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2fab4b5897b482ca13fb9c43551ebb, type: 3}
   m_Name: Config_Grunt
   m_EditorClassIdentifier: Assembly-CSharp::CoreBreach.Domain.Enemies.EnemyConfig
-  hp: 5
+  hp: 3
   damage: 1
   speed: 2.5
   scale: 1
