@@ -20,5 +20,8 @@ namespace CoreBreach.Domain.Enemies
         [Header("Strategies")]
         public MovementStrategySO movementStrategy;
         public TargetingStrategySO targetingStrategy;
+
+        [Header("Visuals")]
+        public RuntimeAnimatorController animatorController;
     }
 }

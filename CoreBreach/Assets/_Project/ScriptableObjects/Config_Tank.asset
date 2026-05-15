@@ -16,6 +16,7 @@ MonoBehaviour:
   damage: 3
   speed: 1.2
   scale: 1.6
-  color: {r: 0.9811321, g: 0, b: 0, a: 1}
+  color: {r: 0.4669811, g: 0.52519107, b: 1, a: 1}
   movementStrategy: {fileID: 11400000, guid: 4e77c492478354178b2107b2d7ef9df4, type: 2}
   targetingStrategy: {fileID: 11400000, guid: 3aa40c410a515409da57f0dd7a1d1a98, type: 2}
+  animatorController: {fileID: 9100000, guid: c2d4f76d0c9164d8db37c9642b0a75c2, type: 2}
