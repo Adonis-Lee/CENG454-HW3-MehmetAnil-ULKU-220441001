@@ -11,9 +11,9 @@ namespace CoreBreach.Domain.Enemies
     {
         public override void Step(Enemy enemy, Vector2 target, float deltaTime)
         {
-            Vector2 pos = enemy.transform.position;
+            Vector2 pos = enemy.Rb.position;
             Vector2 dir = (target - pos).normalized;
-            enemy.transform.position = pos + dir * enemy.Speed * deltaTime;
+            enemy.Rb.MovePosition(pos + dir * enemy.Speed * deltaTime);
         }
     }
 }

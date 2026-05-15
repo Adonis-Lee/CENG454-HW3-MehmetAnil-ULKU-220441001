@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace CoreBreach.Domain.Weapons
 {
     /// <summary>
@@ -11,7 +13,7 @@ namespace CoreBreach.Domain.Weapons
 
         public void Fire(FireContext context)
         {
-            inner.Fire(context.WithDamage(context.BaseDamage * 2));
+            inner.Fire(context.WithDamage(Mathf.RoundToInt(context.BaseDamage * 1.5f)));
         }
     }
 }

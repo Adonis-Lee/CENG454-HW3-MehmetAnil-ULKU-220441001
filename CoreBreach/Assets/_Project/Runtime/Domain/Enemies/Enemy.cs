@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using CoreBreach.Domain.Combat;
 using CoreBreach.Domain.CoreDomain;
+using CoreBreach.Domain.Player;
 using CoreBreach.Infrastructure.Pooling;
 
 namespace CoreBreach.Domain.Enemies
@@ -14,6 +15,7 @@ namespace CoreBreach.Domain.Enemies
     /// OnEnable/OnDisable simetrisi: Ghost Subscriber önlenir (Debug #003).
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
+    [RequireComponent(typeof(Rigidbody2D))]
     public class Enemy : MonoBehaviour, IDamageable, IPoolable
     {
         private int hp;
@@ -25,6 +27,12 @@ namespace CoreBreach.Domain.Enemies
 
         public float Speed { get; private set; }
         public bool IsAlive => hp > 0;
+        public Rigidbody2D Rb { get; private set; }
+
+        private void Awake()
+        {
+            Rb = GetComponent<Rigidbody2D>();
+        }
 
         public event Action<Enemy> Died;
 
@@ -37,6 +45,14 @@ namespace CoreBreach.Domain.Enemies
 
             transform.localScale = Vector3.one * config.scale;
             GetComponent<SpriteRenderer>().color = config.color;
+
+            // Zombie animator controller ata — Animator yoksa ekle
+            if (config.animatorController != null)
+            {
+                var anim = GetComponent<Animator>();
+                if (anim == null) anim = gameObject.AddComponent<Animator>();
+                anim.runtimeAnimatorController = config.animatorController;
+            }
 
             movement = config.movementStrategy;
             targeting = config.targetingStrategy;
@@ -73,13 +89,13 @@ namespace CoreBreach.Domain.Enemies
             // Pool'a iade OnDespawn'da temizler
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (!IsAlive || released) return;
             if (movement == null || targeting == null) return;
 
             Vector2 target = targeting.Pick(this);
-            movement.Step(this, target, Time.deltaTime);
+            movement.Step(this, target, Time.fixedDeltaTime);
         }
 
         public void TakeDamage(DamageInfo info)
@@ -89,12 +105,25 @@ namespace CoreBreach.Domain.Enemies
             if (hp <= 0) Die();
         }
 
+        // Core trigger collider'ı algılar — camera shake + Core hasar
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!IsAlive || released) return;
             if (other.TryGetComponent<Core>(out var core) && core.IsAlive)
             {
                 core.TakeDamage(new DamageInfo(damage, transform.position, gameObject));
+                Die();
+            }
+        }
+
+        // Player fiziksel çarpışması — hasar ver + öl
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if (!IsAlive || released) return;
+            var player = col.gameObject.GetComponentInParent<PlayerHealth>();
+            if (player != null && player.IsAlive)
+            {
+                player.TakeDamage(new DamageInfo(damage, transform.position, gameObject));
                 Die();
             }
         }
