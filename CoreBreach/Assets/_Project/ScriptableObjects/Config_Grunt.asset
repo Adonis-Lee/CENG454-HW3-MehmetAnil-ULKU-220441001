@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2fab4b5897b482ca13fb9c43551ebb, type: 3}
   m_Name: Config_Grunt
   m_EditorClassIdentifier: Assembly-CSharp::CoreBreach.Domain.Enemies.EnemyConfig
-  hp: 5
+  hp: 4
   damage: 1
   speed: 2.5
   scale: 1
-  color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  color: {r: 0.8773585, g: 0.7653791, b: 0.0041384934, a: 1}
   movementStrategy: {fileID: 11400000, guid: 4e77c492478354178b2107b2d7ef9df4, type: 2}
   targetingStrategy: {fileID: 11400000, guid: 3aa40c410a515409da57f0dd7a1d1a98, type: 2}
+  animatorController: {fileID: 9100000, guid: b537798bb7eac47818d30f7a590a1a3c, type: 2}

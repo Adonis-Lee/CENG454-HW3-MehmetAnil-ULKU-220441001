@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+
 namespace CoreBreach.Domain.Weapons
 {
     /// <summary>
@@ -15,7 +16,7 @@ namespace CoreBreach.Domain.Weapons
         private readonly MonoBehaviour runner;
 
         public BurstDecorator(IWeaponBehavior inner, MonoBehaviour runner,
-                               int burstCount = 3, float burstDelay = 0.08f)
+                               int burstCount = 2, float burstDelay = 0.08f)
         {
             this.inner = inner;
             this.runner = runner;
@@ -30,9 +31,11 @@ namespace CoreBreach.Domain.Weapons
 
         private IEnumerator BurstRoutine(FireContext context)
         {
+            int reducedDmg = Mathf.Max(1, Mathf.RoundToInt(context.BaseDamage * 0.75f));
+            FireContext reduced = context.WithDamage(reducedDmg);
             for (int i = 0; i < burstCount; i++)
             {
-                inner.Fire(context);
+                inner.Fire(reduced);
                 yield return new WaitForSeconds(burstDelay);
             }
         }
