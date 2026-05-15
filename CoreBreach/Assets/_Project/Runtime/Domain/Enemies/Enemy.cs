@@ -46,6 +46,14 @@ namespace CoreBreach.Domain.Enemies
             transform.localScale = Vector3.one * config.scale;
             GetComponent<SpriteRenderer>().color = config.color;
 
+            // Zombie animator controller ata — Animator yoksa ekle
+            if (config.animatorController != null)
+            {
+                var anim = GetComponent<Animator>();
+                if (anim == null) anim = gameObject.AddComponent<Animator>();
+                anim.runtimeAnimatorController = config.animatorController;
+            }
+
             movement = config.movementStrategy;
             targeting = config.targetingStrategy;
 
