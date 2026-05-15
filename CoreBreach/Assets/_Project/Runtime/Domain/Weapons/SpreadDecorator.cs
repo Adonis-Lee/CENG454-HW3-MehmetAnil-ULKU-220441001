@@ -19,9 +19,10 @@ namespace CoreBreach.Domain.Weapons
 
         public void Fire(FireContext context)
         {
-            inner.Fire(context); // merkez
-            inner.Fire(context.WithDirection(Rotate(context.Direction, spreadAngle)));
-            inner.Fire(context.WithDirection(Rotate(context.Direction, -spreadAngle)));
+            int reducedDmg = Mathf.Max(1, Mathf.RoundToInt(context.BaseDamage * 0.75f));
+            var reduced = context.WithDamage(reducedDmg);
+            inner.Fire(reduced.WithDirection(Rotate(context.Direction,  spreadAngle)));
+            inner.Fire(reduced.WithDirection(Rotate(context.Direction, -spreadAngle)));
         }
 
         private static Vector2 Rotate(Vector2 dir, float degrees)

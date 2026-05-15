@@ -9,7 +9,7 @@ namespace CoreBreach.Domain.Weapons
         private readonly IWeaponBehavior inner;
         private readonly int pierceCount;
 
-        public PierceDecorator(IWeaponBehavior inner, int pierceCount = 2)
+        public PierceDecorator(IWeaponBehavior inner, int pierceCount = 1)
         {
             this.inner = inner;
             this.pierceCount = pierceCount;
